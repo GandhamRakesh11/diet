@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diet and Workouts Recommendations</title>
+    <!-- Add Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* Set background image for the body */
+        body {
+            background: url('https://img.freepik.com/free-photo/overhead-view-measuring-tape-food-dumbbell-white-backdrop_23-2147882057.jpg?semt=ais_hybrid') no-repeat center center fixed;
+            background-size: cover;
+            color: white;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .container {
+            max-width: 800px;
+            margin-top: 50px;
+        }
+
+        /* Style for the form container */
+        .form-container {
+            background-color: rgba(255, 255, 255, 0.8);
+            color: black;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        h1 {
+            font-weight: bold;
+            text-align: center;
+            font-size: 36px;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        label {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .form-group input, .form-group select {
+            font-size: 1.1rem;
+            padding: 10px;
+        }
+
+        .btn-danger {
+            font-weight: bold;
+            width: 100%;
+            padding: 15px;
+            font-size: 1.1rem;
+            margin-top: 20px;
+        }
+
+        .form-row {
+            margin-bottom: 20px;
+        }
+
+        .nav-link {
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="form-container">
+            <h1>Diet and Workouts Recommendations</h1>
+            
+            <!-- Tabs for Login, Signup -->
+            <ul class="nav nav-tabs" id="authTabs" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" id="signup-tab" data-toggle="tab" href="#signup" role="tab">Sign Up</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="login-tab" data-toggle="tab" href="#login" role="tab">Login</a>
+                </li>
+            </ul>
+
+            <div class="tab-content mt-4" id="authTabsContent">
+                <!-- Signup Tab Content -->
+                <div class="tab-pane fade show active" id="signup" role="tabpanel">
+                    <form action="/signup" method="post" onsubmit="handleSignup(event)">
+                        <div class="form-group">
+                            <label for="signupUsername">Username</label>
+                            <input type="text" class="form-control" id="signupUsername" name="username" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="signupPassword">Password</label>
+                            <input type="password" class="form-control" id="signupPassword" name="password" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="confirmPassword">Confirm Password</label>
+                            <input type="password" class="form-control" id="confirmPassword" name="confirm_password" required>
+                        </div>
+                        <button type="submit" class="btn btn-danger">Sign Up</button>
+                    </form>
+                    <p class="text-center mt-3">Already have an account? <a href="#login" data-toggle="tab">Login</a></p>
+                </div>
+
+                <!-- Login Tab Content -->
+                <div class="tab-pane fade" id="login" role="tabpanel">
+                    <form action="/login" method="post" onsubmit="redirectToRecommendations(event)">
+                        <div class="form-group">
+                            <label for="loginUsername">Username</label>
+                            <input type="text" class="form-control" id="loginUsername" name="username" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="loginPassword">Password</label>
+                            <input type="password" class="form-control" id="loginPassword" name="password" required>
+                        </div>
+                        <button type="submit" class="btn btn-danger">Login</button>
+                    </form>
+                    <p class="text-center mt-3">Don't have an account? <a href="#signup" data-toggle="tab">Sign Up</a></p>
+                </div>
+
+                <!-- Recommendations Form (Initially Hidden, will be shown after login/signup) -->
+                <div id="recommend" style="display: none;">
+                    <h2 class="text-center mb-4">Diet and Workouts Recommendation</h2>
+                    <form action="/recommend" method="post">
+                        <!-- Personal Information Section -->
+                        <div class="form-row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="age">Age:</label>
+                                    <input type="number" class="form-control" id="age" name="age" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="gender">Gender:</label>
+                                    <select class="form-control" id="gender" name="gender" required>
+                                        <option value="male">Male</option>
+                                        <option value="female">Female</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Body Measurements Section -->
+                        <div class="form-row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="weight">Weight (kg):</label>
+                                    <input type="number" class="form-control" id="weight" name="weight" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="height">Height (m):</label>
+                                    <input type="number" class="form-control" id="height" name="height" step="0.01" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Diet Preferences Section -->
+                        <div class="form-row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="veg_or_nonveg">Veg or Non-Veg:</label>
+                                    <select class="form-control" id="veg_or_nonveg" name="veg_or_nonveg" required>
+                                        <option value="veg">Veg</option>
+                                        <option value="nonveg">Non-Veg</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="disease">Disease:</label>
+                                    <input type="text" class="form-control" id="disease" name="disease" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Region & Allergies Section -->
+                        <div class="form-row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="region">Region:</label>
+                                    <input type="text" class="form-control" id="region" name="region" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="allergics">Allergics:</label>
+                                    <input type="text" class="form-control" id="allergics" name="allergics" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Food Type & Medical Conditions Section -->
+                        <div class="form-row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="foodtype">Food Type:</label>
+                                    <input type="text" class="form-control" id="foodtype" name="foodtype" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="medical_conditions">Medical Conditions:</label>
+                                    <input type="text" class="form-control" id="medical_conditions" name="medical_conditions" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <button type="submit" class="btn btn-danger">Recommend Diets</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Bootstrap JS and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        // Function to redirect to Recommendations after Login
+        function redirectToRecommendations(event) {
+            event.preventDefault(); // Prevent form submission
+            // Hide signup/login and show the recommendations form
+            $('#signup-tab').hide();
+            $('#login-tab').hide();
+            $('#authTabsContent').find('.tab-pane').hide();
+            $('#recommend').show();
+        }
+
+        // Function to handle signup and redirect to Recommendations
+        function handleSignup(event) {
+            event.preventDefault(); // Prevent form submission
+            // Hide signup/login and show the recommendations form
+            $('#signup-tab').hide();
+            $('#login-tab').hide();
+            $('#authTabsContent').find('.tab-pane').hide();
+            $('#recommend').show();
+        }
+    </script>
+</body>
+</html>
